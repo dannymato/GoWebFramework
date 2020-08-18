@@ -25,12 +25,14 @@ var (
 	ErrInternalServer = &Error{"internal_server_error", 500, "Internal Server Error", "Something went wrong."}
 	// ErrBadRequest provides a constant Error for HTTP Error 400
 	ErrBadRequest = &Error{"bad_request", 400, "Bad Request Error", "Invalid JSON input"}
+	// ErrForbidden provides a constant error for HTTP Error 403
+	ErrForbidden = &Error{"forbidden", 403, "Forbidden Access", "Authentication for this resource failed."}
 )
 
 // WriteError takes an httpResponseWriter and an Error and writes the error the Writer using the JSON encoder
 func WriteError(w http.ResponseWriter, err *Error) {
 	w.Header().Set("Content-Type", "application/vnd.api+json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:8080")
 	w.WriteHeader(err.Status)
 	json.NewEncoder(w).Encode(Errors{[]*Error{err}})
 }

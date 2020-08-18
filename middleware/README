@@ -1,0 +1,7 @@
+This file is a part of a web framework that I wrote following a guide in Go
+The framework is used for my mouseyears application as the backend retrieving 
+items from the database and returning it to the frontend.
+
+This part is the middleware which goes in between the http router and the actual
+function which handles the http request. These functions are repeated functions
+that always should be called for every http request. 

@@ -1,8 +1,8 @@
 package middleware
 
 import (
+	error "GoWebFramework/error"
 	"encoding/json"
-	"framework/error"
 	"log"
 	"net/http"
 	"reflect"
@@ -71,6 +71,7 @@ func RecoverHandler(next http.Handler) http.Handler {
 	return http.HandlerFunc(fn)
 }
 
+// CorsHandler is the default CorsHandler and uses the * as the origin
 func CorsHandler(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -81,6 +82,31 @@ func CorsHandler(next http.Handler) http.Handler {
 
 }
 
+// CorsHandlerWithOrigin provides the cors header option with the option to include an origin
+func CorsHandlerWithOrigin(origin string) func(http.Handler) http.Handler {
+
+	m := func(next http.Handler) http.Handler {
+		fn := func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+			next.ServeHTTP(w, r)
+		}
+		return http.HandlerFunc(fn)
+	}
+	return m
+
+}
+
+// ReboundCorsHandler takes the origin of the request and sets that as the allow origin
+func ReboundCorsHandler(next http.Handler) http.Handler {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", r.Header.Get("Origin"))
+		next.ServeHTTP(w, r)
+	}
+
+	return http.HandlerFunc(fn)
+}
+
+// OptionsHandler is a generic handler for pre-flight options cors request
 func OptionsHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT")
 	w.Header().Set("Access-Control-Max-Age", "120")
