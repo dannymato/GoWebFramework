@@ -44,6 +44,11 @@ func (h *HandlerRouter) OPTIONS(route string, handler http.Handler) {
 	h.router.OPTIONS(route, wrapHandler(handler))
 }
 
+// PATCH is a wrapper for the router PATCH method
+func (h *HandlerRouter) PATCH(route string, handler http.Handler) {
+	h.router.PATCH(route, wrapHandler(handler))
+}
+
 // DELETE is a wrapper for the router DELETE method
 func (h *HandlerRouter) DELETE(route string, handler http.Handler) {
 	h.router.DELETE(route, wrapHandler(handler))
