@@ -38,8 +38,8 @@ func NewWebListener() *WebListener {
 }
 
 // Start initializes the http web service on the specified host address with the routes provided previously
-func (listener *WebListener) Start(hostAddress string) {
-	http.ListenAndServe(hostAddress, listener.router.GetRouter())
+func (listener *WebListener) Start(hostAddress string) error {
+	return http.ListenAndServe(hostAddress, listener.router.GetRouter())
 }
 
 // AddMiddleware adds an additional function to the alice Chain for data to pass through on the way to the handler
@@ -65,6 +65,11 @@ func (listener *WebListener) PUT(path string, handler http.HandlerFunc) {
 // OPTIONS wraps the router OPTIONS function and calls the middleware before the passed HandlerFunc
 func (listener *WebListener) OPTIONS(path string, handler http.HandlerFunc) {
 	listener.router.OPTIONS(path, listener.middleware.ThenFunc(handler))
+}
+
+// PATCH wraps the router PATCH function and calls the middle ware before the passed HandlerFunc
+func (listener *WebListener) PATCH(path string, handler http.HandlerFunc) {
+	listener.router.PATCH(path, listener.middleware.ThenFunc(handler))
 }
 
 // DELETE wraps the router DELETE function and calls the middleware before the passed HandlerFunc
