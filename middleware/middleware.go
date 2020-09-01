@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	error "GoWebFramework/error"
+	error "github.com/dannymato/GoWebFramework/error"
 	"encoding/json"
 	"log"
 	"net/http"
