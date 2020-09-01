@@ -1,4 +1,4 @@
-module GoWebFramework
+module github.com/dannymato/GoWebFramework
 
 go 1.14
 
